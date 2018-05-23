@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MovieApp</string>
+    <string name="intent_name">MovieDetails</string>
+    <string name="action_settings">Settings</string>
+    <string name="connection_error_title">Connection Error</string>
+    <string name="connection_error">Movies Data can not be loaded. Check for your connection.</string>
+    <string name="reload_button">Reload</string>
+</resources>
