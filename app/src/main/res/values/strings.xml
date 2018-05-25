@@ -4,5 +4,6 @@
     <string name="action_settings">Settings</string>
     <string name="connection_error_title">Connection Error</string>
     <string name="connection_error">Movies Data can not be loaded. Check for your connection.</string>
+    <string name="close_on_intent_error"></string>
     <string name="reload_button">Reload</string>
 </resources>

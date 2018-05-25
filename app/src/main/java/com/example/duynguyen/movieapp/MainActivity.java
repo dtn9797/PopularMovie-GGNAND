@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodSubtype;
 
 import com.example.duynguyen.movieapp.Model.APIResponse;
 import com.example.duynguyen.movieapp.Model.Movie;
@@ -25,11 +26,14 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemListener {
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
+    private String movieType="normal type";
     RecyclerViewAdapter mRecyclerViewAdapter;
+
 
     final String POPULAR_TYPE ="popular";
     final String TOP_RATED_TYPE ="top rated";
+    final String TYPE_EXTRA = "type_extra";
     final String API_KEY =  BuildConfig.ApiKey ;
 
 
@@ -44,7 +48,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         AutoFitGridLayoutManager autoFitGridLayoutManager = new AutoFitGridLayoutManager(MainActivity.this,500);
         recyclerView.setLayoutManager(autoFitGridLayoutManager);
 
-        loadMovieData("normal");
+        if (savedInstanceState != null){
+            movieType = savedInstanceState.getString(TYPE_EXTRA);
+        }
+        loadMovieData(movieType);
     }
 
     @Override
@@ -63,11 +70,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.popular_settings) {
-            loadMovieData(POPULAR_TYPE);
+            movieType= POPULAR_TYPE;
+            loadMovieData(movieType);
             return true;
         }
         else if (id == R.id.top_rated_settings) {
-            loadMovieData(TOP_RATED_TYPE);
+            movieType = TOP_RATED_TYPE;
+            loadMovieData(movieType);
             return true;
         }
 
@@ -106,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 });
                 final AlertDialog alert = dialog.create();
                 alert.show();
-
             }
         });
     }
@@ -124,5 +132,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         intent.putExtra(DetailedActivity.RELEASE_DATE_EXTRA,item.getReleaseDate());
         intent.putExtra(DetailedActivity.VOTE_AVERAGE_EXTRA,item.getVoteAverage());
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(TYPE_EXTRA,movieType);
     }
 }

@@ -3,7 +3,6 @@ package com.example.duynguyen.movieapp.Model;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by duynguyen on 5/16/18.

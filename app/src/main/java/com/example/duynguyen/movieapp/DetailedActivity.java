@@ -1,32 +1,16 @@
 package com.example.duynguyen.movieapp;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.duynguyen.movieapp.Model.APIResponse;
-import com.example.duynguyen.movieapp.Model.Movie;
-import com.example.duynguyen.movieapp.Utils.AutoFitGridLayoutManager;
-import com.example.duynguyen.movieapp.Utils.MovieClient;
-import com.example.duynguyen.movieapp.Utils.RetrofitClient;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DetailedActivity extends AppCompatActivity  {
 
@@ -78,7 +62,7 @@ public class DetailedActivity extends AppCompatActivity  {
     }
     private void closeOnError () {
         finish();
-        Toast.makeText(this, "Data is not available", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.close_on_intent_error), Toast.LENGTH_SHORT).show();
     }
 
     //private void
