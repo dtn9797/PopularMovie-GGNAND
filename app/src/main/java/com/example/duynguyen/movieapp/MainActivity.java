@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.duynguyen.movieapp.Model.APIResponse;
+import com.example.duynguyen.movieapp.Model.MovieList;
 import com.example.duynguyen.movieapp.Model.Movie;
 import com.example.duynguyen.movieapp.Utils.AutoFitGridLayoutManager;
 import com.example.duynguyen.movieapp.Utils.MovieClient;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     final String POPULAR_TYPE ="popular";
     final String TOP_RATED_TYPE ="top rated";
     final String TYPE_EXTRA = "type_extra";
-    final String API_KEY =  BuildConfig.ApiKey ;
+    public static final String API_KEY =  BuildConfig.ApiKey ;
 
 
     @Override
@@ -84,22 +84,22 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     public void loadMovieData (String type){
         MovieClient client =  new RetrofitClient("https://api.themoviedb.org").getClient().create(MovieClient.class);
-        Call<APIResponse> call;
+        Call<MovieList> call;
         if (type == TOP_RATED_TYPE) {
            call = client.top_rated(API_KEY);
         }
         else {
             call = client.popular_movies(API_KEY);
         }
-        call.enqueue(new Callback<APIResponse>() {
+        call.enqueue(new Callback<MovieList>() {
             @Override
-            public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
+            public void onResponse(Call<MovieList> call, Response<MovieList> response) {
                 ArrayList<Movie> movies = response.body().getResults();
                 mMoviePosterAdapter.setMoviesData(movies);
             }
 
             @Override
-            public void onFailure(Call<APIResponse> call, Throwable t) {
+            public void onFailure(Call<MovieList> call, Throwable t) {
                 //Show alert dialog
                 Log.e("Error","Error in retrofit");
                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     }
     private void launchDetailActivity (Movie item){
         Intent intent = new Intent(this,DetailedActivity.class);
+        intent.putExtra(DetailedActivity.ID_EXTRA,item.getId());
         intent.putExtra(DetailedActivity.POSTER_EXTRA,item.getPoster_path());
         intent.putExtra(DetailedActivity.TITLE_EXTRA,item.getTitle());
         intent.putExtra(DetailedActivity.OVERVIEW_EXTRA,item.getOverview());

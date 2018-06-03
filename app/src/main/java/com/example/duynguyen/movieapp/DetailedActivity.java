@@ -1,19 +1,35 @@
 package com.example.duynguyen.movieapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.duynguyen.movieapp.Model.Trailer;
+import com.example.duynguyen.movieapp.Model.TrailerList;
+import com.example.duynguyen.movieapp.Utils.MovieTrailerAdapter;
+import com.example.duynguyen.movieapp.Utils.RetrofitClient;
+import com.example.duynguyen.movieapp.Utils.TrailerClient;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailedActivity extends AppCompatActivity  {
 
+    public static final String ID_EXTRA = "id_extra";
     public static final String POSTER_EXTRA = "poster_extra";
     public static final String TITLE_EXTRA ="title_exra";
     public static final String OVERVIEW_EXTRA ="overview_extra";
@@ -30,6 +46,9 @@ public class DetailedActivity extends AppCompatActivity  {
     TextView releaseDateTv;
     @BindView(R.id.vote_average)
     TextView voteAverageTv;
+    @BindView(R.id.trailers_rv)
+    RecyclerView trailersRv;
+    MovieTrailerAdapter mMovieTrailerAdapter;
 
 
     @Override
@@ -43,13 +62,14 @@ public class DetailedActivity extends AppCompatActivity  {
             closeOnError();
         }
 
+        String id = intent.getStringExtra(ID_EXTRA);
         String poster = intent.getStringExtra(POSTER_EXTRA);
         String title = intent.getStringExtra(TITLE_EXTRA);
         String overView = intent.getStringExtra(OVERVIEW_EXTRA);
         String releaseDate = intent.getStringExtra(RELEASE_DATE_EXTRA);
         String voteAverage = intent.getStringExtra(VOTE_AVERAGE_EXTRA);
 
-        if (poster.isEmpty()||title.isEmpty()||overView.isEmpty()||releaseDate.isEmpty()||voteAverage.isEmpty()){
+        if (poster.isEmpty()||title.isEmpty()||overView.isEmpty()||releaseDate.isEmpty()||voteAverage.isEmpty()||id.isEmpty()){
             closeOnError();
             return;
         }
@@ -59,11 +79,48 @@ public class DetailedActivity extends AppCompatActivity  {
         overviewTv.setText(overView);
         releaseDateTv.setText(releaseDate);
         voteAverageTv.setText(voteAverage+"/10");
+        //RecyclerView
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mMovieTrailerAdapter =  new MovieTrailerAdapter(this);
+        trailersRv.setLayoutManager(linearLayoutManager);
+        trailersRv.setAdapter(mMovieTrailerAdapter);
+        loadTrailers(id);
     }
+
+    private void loadTrailers(String movieId) {
+        TrailerClient client =  new RetrofitClient("https://api.themoviedb.org").getClient().create(TrailerClient.class);
+        Call<TrailerList> call =client.trailers(movieId,MainActivity.API_KEY);
+        call.enqueue(new Callback<TrailerList>() {
+            @Override
+            public void onResponse(Call<TrailerList> call, Response<TrailerList> response) {
+                ArrayList<Trailer> trailers = response.body().getTrailers();
+                mMovieTrailerAdapter.setTrailersData(trailers);
+            }
+
+            @Override
+            public void onFailure(Call<TrailerList> call, Throwable t) {
+                //Show alert dialog
+                Log.e("Error",t.getMessage());
+
+//                AlertDialog.Builder dialog = new AlertDialog.Builder(DetailedActivity.this);
+//                dialog.setCancelable(false);
+//                dialog.setTitle(getString(R.string.connection_error_title));
+//                dialog.setMessage(getString(R.string.connection_error) );
+//                dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        loadMovieData(TOP_RATED_TYPE);
+//                    }
+//                });
+//                final AlertDialog alert = dialog.create();
+//                alert.show();
+            }
+        });
+    }
+
     private void closeOnError () {
         finish();
         Toast.makeText(this, getString(R.string.close_on_intent_error), Toast.LENGTH_SHORT).show();
     }
 
-    //private void
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by duynguyen on 5/16/18.
  */
 
-public class APIResponse {
+public class MovieList {
     @SerializedName("results")
     private ArrayList<Movie> movies;
 

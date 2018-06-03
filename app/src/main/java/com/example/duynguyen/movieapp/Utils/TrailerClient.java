@@ -1,9 +1,12 @@
 package com.example.duynguyen.movieapp.Utils;
 
 import com.example.duynguyen.movieapp.Model.Trailer;
+import com.example.duynguyen.movieapp.Model.TrailerList;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -13,6 +16,6 @@ import retrofit2.http.Query;
  */
 
 public interface TrailerClient {
-    @GET("/3/movie/{id}/videos?api_key=84d34117b17f3abebe9d04a0325e21c6")
-    ArrayList<Trailer> trailers(@Path("id") String id, @Query("api_key") String apiKey);
+    @GET("/3/movie/{id}/videos")
+    Call<TrailerList> trailers(@Path("id") String id, @Query("api_key") String apiKey);
 }
