@@ -11,7 +11,7 @@ import com.example.duynguyen.movieapp.R;
 
 import java.util.ArrayList;
 
-public class MoviePosterAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterHolder> {
 
     ArrayList<Movie> mItems=new ArrayList<Movie>();
     Context mContext;
@@ -23,13 +23,13 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
 
-//    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+//    public class MoviePosterHolder extends RecyclerView.MoviePosterHolder implements View.OnClickListener{
 //        public RelativeLayout relativeLayout;
 //        public ImageView imageView;
 //        Movie item;
 //
 //
-//        public ViewHolder(View v) {
+//        public MoviePosterHolder(View v) {
 //            super(v);
 //
 //            v.setOnClickListener(this);
@@ -57,14 +57,14 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MoviePosterHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //Context context = parent.getContext();
         View view = LayoutInflater.from(mContext).inflate(R.layout.movie_poster_vh, parent, false);
-        return new ViewHolder(view);
+        return new MoviePosterHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(MoviePosterHolder holder, int position) {
         holder.setData(mItems.get(position));
     }
 

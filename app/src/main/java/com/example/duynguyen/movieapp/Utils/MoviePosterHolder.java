@@ -9,13 +9,13 @@ import com.example.duynguyen.movieapp.Model.Movie;
 import com.example.duynguyen.movieapp.R;
 import com.squareup.picasso.Picasso;
 
-public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class MoviePosterHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     public RelativeLayout relativeLayout;
     public ImageView imageView;
     Movie item;
 
 
-    public ViewHolder(View v) {
+    public MoviePosterHolder(View v) {
         super(v);
 
         v.setOnClickListener(this);
