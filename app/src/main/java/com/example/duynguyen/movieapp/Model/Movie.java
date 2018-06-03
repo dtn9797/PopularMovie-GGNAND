@@ -17,9 +17,11 @@ public class Movie {
     private String releaseDate;
     @SerializedName("original_title")
     private String title;
+    @SerializedName("id")
+    private String id;
 
-    public Movie (String url){
-        posterPath = url;
+    public String getId() {
+        return id;
     }
 
     public String getPoster_path() {

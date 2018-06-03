@@ -6,16 +6,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    public static final String BASE_URL= "https://api.themoviedb.org";
+    public static String baseUrl= "https://api.themoviedb.org";
 
 
 public static Retrofit retrofit = null;
+
+    public RetrofitClient(String baseUrl) {
+        this.baseUrl=baseUrl;
+    }
 
     public static Retrofit getClient(){
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build())
                     .build();

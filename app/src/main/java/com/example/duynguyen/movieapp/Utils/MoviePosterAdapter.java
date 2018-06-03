@@ -11,13 +11,13 @@ import com.example.duynguyen.movieapp.R;
 
 import java.util.ArrayList;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class MoviePosterAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     ArrayList<Movie> mItems=new ArrayList<Movie>();
     Context mContext;
     protected static ItemListener mItemClickListener;
 
-    public RecyclerViewAdapter(Context context, ItemListener itemClickListener){
+    public MoviePosterAdapter(Context context, ItemListener itemClickListener){
         mContext = context;
         mItemClickListener = itemClickListener;
     }

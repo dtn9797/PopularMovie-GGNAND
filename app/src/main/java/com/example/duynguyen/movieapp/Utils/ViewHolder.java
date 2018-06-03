@@ -31,8 +31,8 @@ public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (RecyclerViewAdapter.mItemClickListener!=null){
-            RecyclerViewAdapter.mItemClickListener.onItemClick(item);
+        if (MoviePosterAdapter.mItemClickListener!=null){
+            MoviePosterAdapter.mItemClickListener.onItemClick(item);
         }
     }
 }

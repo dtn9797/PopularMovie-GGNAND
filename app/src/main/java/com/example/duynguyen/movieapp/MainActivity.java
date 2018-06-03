@@ -9,13 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.InputMethodSubtype;
 
 import com.example.duynguyen.movieapp.Model.APIResponse;
 import com.example.duynguyen.movieapp.Model.Movie;
 import com.example.duynguyen.movieapp.Utils.AutoFitGridLayoutManager;
 import com.example.duynguyen.movieapp.Utils.MovieClient;
-import com.example.duynguyen.movieapp.Utils.RecyclerViewAdapter;
+import com.example.duynguyen.movieapp.Utils.MoviePosterAdapter;
 import com.example.duynguyen.movieapp.Utils.RetrofitClient;
 
 import java.util.ArrayList;
@@ -24,11 +23,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemListener {
+public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.ItemListener {
 
     private RecyclerView recyclerView;
     private String movieType="normal type";
-    RecyclerViewAdapter mRecyclerViewAdapter;
+    MoviePosterAdapter mMoviePosterAdapter;
 
 
     final String POPULAR_TYPE ="popular";
@@ -43,8 +42,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         setContentView(R.layout.activity_main);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerViewAdapter = new RecyclerViewAdapter(this,this);
-        recyclerView.setAdapter(mRecyclerViewAdapter);
+        mMoviePosterAdapter = new MoviePosterAdapter(this,this);
+        recyclerView.setAdapter(mMoviePosterAdapter);
         AutoFitGridLayoutManager autoFitGridLayoutManager = new AutoFitGridLayoutManager(MainActivity.this,500);
         recyclerView.setLayoutManager(autoFitGridLayoutManager);
 
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
     public void loadMovieData (String type){
-        MovieClient client =  new RetrofitClient().getClient().create(MovieClient.class);
+        MovieClient client =  new RetrofitClient("https://api.themoviedb.org").getClient().create(MovieClient.class);
         Call<APIResponse> call;
         if (type == TOP_RATED_TYPE) {
            call = client.top_rated(API_KEY);
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             @Override
             public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
                 ArrayList<Movie> movies = response.body().getResults();
-                mRecyclerViewAdapter.setMoviesData(movies);
+                mMoviePosterAdapter.setMoviesData(movies);
             }
 
             @Override
