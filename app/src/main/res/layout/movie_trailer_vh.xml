@@ -24,23 +24,17 @@
             android:id="@+id/trailer_type_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/trailer_name_tv"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/trailer_name_tv"
-            android:layout_marginBottom="29dp"
-            android:text="Type" />
+            android:layout_alignParentRight="true"
+            android:textStyle="bold"
+            android:text="type" />
 
         <TextView
             android:id="@+id/trailer_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="41dp"
-            android:layout_marginStart="41dp"
-            android:layout_marginTop="12dp"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_toRightOf="@+id/imageView"
-            android:text="TRAILER FOR APP" />
+            android:layout_toRightOf="@id/trailer_iv"
+            android:text="trailer for app" />
 
     </RelativeLayout>
 
