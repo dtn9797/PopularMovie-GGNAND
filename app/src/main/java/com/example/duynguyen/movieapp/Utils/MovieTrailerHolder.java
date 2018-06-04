@@ -44,6 +44,8 @@ public class MovieTrailerHolder extends RecyclerView.ViewHolder implements View.
 
     @Override
     public void onClick(View v) {
-        MovieTrailerAdapter.mItemClickListener.onItemClick(item);
+        if (MovieTrailerAdapter.mItemClickListener!=null) {
+            MovieTrailerAdapter.mItemClickListener.onItemClick(item);
+        }
     }
 }
