@@ -18,9 +18,11 @@ import java.util.ArrayList;
 public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerHolder> {
     ArrayList<Trailer> mItems = new ArrayList<>();
     Context mContext;
+    protected static ItemListener mItemClickListener;
 
-    public MovieTrailerAdapter(Context mContext) {
+    public MovieTrailerAdapter(Context mContext, ItemListener mItemClickListener) {
         this.mContext = mContext;
+        this.mItemClickListener = mItemClickListener;
     }
 
     public void setTrailersData (ArrayList<Trailer> items){
@@ -42,5 +44,9 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerHolder
     @Override
     public int getItemCount() {
         return mItems.size();
+    }
+
+    public interface ItemListener {
+        void onItemClick (Trailer item);
     }
 }

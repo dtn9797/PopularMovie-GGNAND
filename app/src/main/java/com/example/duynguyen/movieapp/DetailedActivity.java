@@ -2,6 +2,7 @@ package com.example.duynguyen.movieapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailedActivity extends AppCompatActivity  {
+public class DetailedActivity extends AppCompatActivity implements MovieTrailerAdapter.ItemListener {
 
     public static final String ID_EXTRA = "id_extra";
     public static final String POSTER_EXTRA = "poster_extra";
@@ -81,13 +82,13 @@ public class DetailedActivity extends AppCompatActivity  {
         voteAverageTv.setText(voteAverage+"/10");
         //RecyclerView
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        mMovieTrailerAdapter =  new MovieTrailerAdapter(this);
+        mMovieTrailerAdapter =  new MovieTrailerAdapter(this,this);
         trailersRv.setLayoutManager(linearLayoutManager);
         trailersRv.setAdapter(mMovieTrailerAdapter);
         loadTrailers(id);
     }
 
-    private void loadTrailers(String movieId) {
+    private void loadTrailers(final String movieId) {
         TrailerClient client =  new RetrofitClient("https://api.themoviedb.org").getClient().create(TrailerClient.class);
         Call<TrailerList> call =client.trailers(movieId,MainActivity.API_KEY);
         call.enqueue(new Callback<TrailerList>() {
@@ -101,19 +102,18 @@ public class DetailedActivity extends AppCompatActivity  {
             public void onFailure(Call<TrailerList> call, Throwable t) {
                 //Show alert dialog
                 Log.e("Error",t.getMessage());
-
-//                AlertDialog.Builder dialog = new AlertDialog.Builder(DetailedActivity.this);
-//                dialog.setCancelable(false);
-//                dialog.setTitle(getString(R.string.connection_error_title));
-//                dialog.setMessage(getString(R.string.connection_error) );
-//                dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        loadMovieData(TOP_RATED_TYPE);
-//                    }
-//                });
-//                final AlertDialog alert = dialog.create();
-//                alert.show();
+                AlertDialog.Builder dialog = new AlertDialog.Builder(DetailedActivity.this);
+                dialog.setCancelable(false);
+                dialog.setTitle(getString(R.string.connection_error_title));
+                dialog.setMessage(getString(R.string.connection_error) );
+                dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        loadTrailers(movieId);
+                    }
+                });
+                final AlertDialog alert = dialog.create();
+                alert.show();
             }
         });
     }
@@ -123,4 +123,15 @@ public class DetailedActivity extends AppCompatActivity  {
         Toast.makeText(this, getString(R.string.close_on_intent_error), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onItemClick(Trailer item) {
+        Toast.makeText(getApplicationContext(),"Trailer is clicked",Toast.LENGTH_LONG).show();
+        //open trailer
+        Uri webpage = Uri.parse("http://www.youtube.com/watch?v=Z5ezsReZcxU");
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+
+    }
 }

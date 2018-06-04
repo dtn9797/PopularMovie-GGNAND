@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
  * Created by duynguyen on 6/2/18.
  */
 
-public class MovieTrailerHolder extends RecyclerView.ViewHolder {
+public class MovieTrailerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     RelativeLayout trailerRelativeLayout;
     ImageView trailerIv;
     TextView nameTv;
@@ -40,5 +40,10 @@ public class MovieTrailerHolder extends RecyclerView.ViewHolder {
         Picasso.get().load(item.getImagePath()).into(trailerIv);
         nameTv.setText(item.getName());
         typeTv.setText(item.getType());
+    }
+
+    @Override
+    public void onClick(View v) {
+        MovieTrailerAdapter.mItemClickListener.onItemClick(item);
     }
 }
