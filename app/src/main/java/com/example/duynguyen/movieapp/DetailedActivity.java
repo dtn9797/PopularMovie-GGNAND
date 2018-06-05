@@ -2,13 +2,13 @@ package com.example.duynguyen.movieapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.duynguyen.movieapp.Model.Trailer;
 import com.example.duynguyen.movieapp.Model.TrailerList;
 import com.example.duynguyen.movieapp.Utils.MovieTrailerAdapter;
+import com.example.duynguyen.movieapp.Utils.RecyclerViewTouchListener;
 import com.example.duynguyen.movieapp.Utils.RetrofitClient;
 import com.example.duynguyen.movieapp.Utils.TrailerClient;
 import com.squareup.picasso.Picasso;
@@ -28,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailedActivity extends AppCompatActivity implements MovieTrailerAdapter.ItemListener {
+public class DetailedActivity extends AppCompatActivity  {
 
     public static final String ID_EXTRA = "id_extra";
     public static final String POSTER_EXTRA = "poster_extra";
@@ -82,13 +83,25 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         voteAverageTv.setText(voteAverage+"/10");
         //RecyclerView
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        mMovieTrailerAdapter =  new MovieTrailerAdapter(this,this);
+        mMovieTrailerAdapter =  new MovieTrailerAdapter(this);
         trailersRv.setLayoutManager(linearLayoutManager);
         trailersRv.setAdapter(mMovieTrailerAdapter);
+        trailersRv.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), trailersRv, new RecyclerViewTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Toast.makeText(getApplicationContext(),"Hi",Toast.LENGTH_LONG).show();
+                Log.e("onClick","onCLick");
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Log.e("onClick","onCLick");
+            }
+        }));
         loadTrailers(id);
     }
 
-    private void loadTrailers(final String movieId) {
+    private void loadTrailers(String movieId) {
         TrailerClient client =  new RetrofitClient("https://api.themoviedb.org").getClient().create(TrailerClient.class);
         Call<TrailerList> call =client.trailers(movieId,MainActivity.API_KEY);
         call.enqueue(new Callback<TrailerList>() {
@@ -102,18 +115,19 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
             public void onFailure(Call<TrailerList> call, Throwable t) {
                 //Show alert dialog
                 Log.e("Error",t.getMessage());
-                AlertDialog.Builder dialog = new AlertDialog.Builder(DetailedActivity.this);
-                dialog.setCancelable(false);
-                dialog.setTitle(getString(R.string.connection_error_title));
-                dialog.setMessage(getString(R.string.connection_error) );
-                dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        loadTrailers(movieId);
-                    }
-                });
-                final AlertDialog alert = dialog.create();
-                alert.show();
+
+//                AlertDialog.Builder dialog = new AlertDialog.Builder(DetailedActivity.this);
+//                dialog.setCancelable(false);
+//                dialog.setTitle(getString(R.string.connection_error_title));
+//                dialog.setMessage(getString(R.string.connection_error) );
+//                dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        loadMovieData(TOP_RATED_TYPE);
+//                    }
+//                });
+//                final AlertDialog alert = dialog.create();
+//                alert.show();
             }
         });
     }
@@ -123,15 +137,4 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         Toast.makeText(this, getString(R.string.close_on_intent_error), Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onItemClick(Trailer item) {
-        Toast.makeText(getApplicationContext(),"Trailer is clicked",Toast.LENGTH_LONG).show();
-        //open trailer
-        Uri webpage = Uri.parse("http://www.youtube.com/watch?v=Z5ezsReZcxU");
-        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
-
-    }
 }
