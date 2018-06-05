@@ -125,9 +125,9 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
 
     @Override
     public void onItemClick(Trailer item) {
-        Toast.makeText(getApplicationContext(),"Trailer is clicked",Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),"Trailer is clicked",Toast.LENGTH_LONG).show();
         //open trailer
-        Uri webpage = Uri.parse("http://www.youtube.com/watch?v=Z5ezsReZcxU");
+        Uri webpage = Uri.parse("http://www.youtube.com/watch?v="+item.getKey());
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);

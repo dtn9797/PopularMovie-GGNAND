@@ -28,6 +28,8 @@ public class MovieTrailerHolder extends RecyclerView.ViewHolder implements View.
 
     public MovieTrailerHolder(View itemView) {
         super(itemView);
+        itemView.setOnClickListener(this);
+
         trailerRelativeLayout=(RelativeLayout)itemView.findViewById(R.id.trailer_relativeLayout);
         trailerIv=(ImageView)itemView.findViewById(R.id.trailer_iv);
         nameTv=(TextView)itemView.findViewById(R.id.trailer_name_tv);
