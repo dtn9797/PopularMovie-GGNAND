@@ -6,4 +6,6 @@
     <string name="connection_error">Movies Data can not be loaded. Check for your connection.</string>
     <string name="close_on_intent_error"></string>
     <string name="reload_button">Reload</string>
+    <string name="review_title">Reviews:</string>
+    <string name="trailer_title">Trailers:</string>
 </resources>

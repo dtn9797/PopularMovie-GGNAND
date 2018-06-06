@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/default_padding"
-            android:text="Trailers:"
+            android:text="@string/trailer_title"
             android:textStyle="bold"
             android:textSize="@dimen/default_font_size"
             app:layout_constraintTop_toBottomOf="@id/divider_between_overview_trailers"
@@ -113,9 +113,30 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trailer_title"
-           >
+            app:layout_constraintTop_toBottomOf="@id/trailer_title"/>
 
-        </android.support.v7.widget.RecyclerView>
+        <View
+            style="@style/Divider"
+            android:id="@+id/divider_between_trailers_reviews"
+            app:layout_constraintTop_toBottomOf="@id/trailers_rv" />
+
+        <TextView
+            android:id="@+id/review_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_padding"
+            android:text="@string/review_title"
+            android:textStyle="bold"
+            android:textSize="@dimen/default_font_size"
+            app:layout_constraintTop_toBottomOf="@id/divider_between_trailers_reviews"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/reviews_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/review_title"/>
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
