@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+      >
+
+        <TextView
+            android:id="@+id/movie_title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="@color/cardview_dark_background"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:padding="@dimen/default_size"
+            android:textColor="@color/cardview_light_background"
+            android:text="Movie Title"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/movie_poster_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/movie_poster" />
+
+            <TextView
+                android:id="@+id/release_date_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignTop="@id/vote_average"
+                android:layout_margin="30dp"
+                android:layout_toRightOf="@id/movie_poster_iv"
+                android:layout_toEndOf="@id/movie_poster_iv"
+                android:gravity="center"
+                android:text="04/26/1997"
+                android:textSize="@dimen/default_font_size" />
+
+            <TextView
+                android:id="@+id/vote_average"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:layout_toRightOf="@+id/movie_poster_iv"
+                android:layout_toEndOf="@id/movie_poster_iv"
+                android:gravity="center"
+                android:text="5/10"
+                android:textSize="@dimen/default_font_size" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/overview_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation "
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="@dimen/default_font_size"
+         />
+
+        <View style="@style/Divider"
+            android:layout_marginTop="@dimen/default_size"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/trailer_title"/>
+
+    </LinearLayout>
+
+</ScrollView>
