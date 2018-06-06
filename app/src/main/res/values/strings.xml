@@ -1,11 +1,26 @@
 <resources>
     <string name="app_name">MovieApp</string>
     <string name="intent_name">MovieDetails</string>
-    <string name="action_settings">Settings</string>
+
+    <!--Error Messages-->
     <string name="connection_error_title">Connection Error</string>
     <string name="connection_error">Movies Data can not be loaded. Check for your connection.</string>
     <string name="close_on_intent_error"></string>
+
+    <!--Button name-->
     <string name="reload_button">Reload</string>
+
+    <!--Titles in details layout-->
     <string name="review_title">Reviews:</string>
     <string name="trailer_title">Trailers:</string>
+
+    <!--Content Descriptions-->
+    <string name="movie_poster_image_description">Movie Poster Image</string>
+
+    <!--Sample texts-->
+    <!--In Detail Layout-->
+    <string name="movie_title_sample">Movie Title</string>
+    <string name="vote_average_sample">5/10</string>
+    <string name="release_date_sample">04/26/1997</string>
+    <string name="over_view_sample">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation </string>
 </resources>

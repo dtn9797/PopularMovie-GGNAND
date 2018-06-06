@@ -14,9 +14,11 @@ import retrofit2.http.Query;
 
 public interface MovieClient {
     @GET("/3/movie/popular")
-    Call<MovieList> popular_movies (@Query("api_key") String apiKey );
+    Call<MovieList> popular_movies(@Query("api_key") String apiKey);
+
     @GET("/3/movie/top_rated")
-    Call<MovieList> top_rated (@Query("api_key") String apiKey );
+    Call<MovieList> top_rated(@Query("api_key") String apiKey);
+
     @GET("/3/movie/{id}/reviews")
-    Call<ReviewList> get_review_list(@Path("id") String id, @Query("api_key") String apiKey );
+    Call<ReviewList> get_review_list(@Path("id") String id, @Query("api_key") String apiKey);
 }

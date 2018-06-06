@@ -1,10 +1,6 @@
 package com.example.duynguyen.movieapp.Utils;
 
-import com.example.duynguyen.movieapp.Model.Trailer;
 import com.example.duynguyen.movieapp.Model.TrailerList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

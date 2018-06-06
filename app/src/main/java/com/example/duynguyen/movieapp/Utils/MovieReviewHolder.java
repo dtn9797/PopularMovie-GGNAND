@@ -14,14 +14,15 @@ import com.example.duynguyen.movieapp.R;
 public class MovieReviewHolder extends RecyclerView.ViewHolder {
     TextView authorTv;
     TextView detailTv;
+
     public MovieReviewHolder(View itemView) {
         super(itemView);
 
-        authorTv = (TextView)itemView.findViewById(R.id.author_tv);
-        detailTv = (TextView)itemView.findViewById(R.id.review_detail_tv);
+        authorTv = (TextView) itemView.findViewById(R.id.author_tv);
+        detailTv = (TextView) itemView.findViewById(R.id.review_detail_tv);
     }
 
-    public void setData (Review review){
+    public void setData(Review review) {
         authorTv.setText(review.getAuthor());
         detailTv.setText(review.getDetail());
     }

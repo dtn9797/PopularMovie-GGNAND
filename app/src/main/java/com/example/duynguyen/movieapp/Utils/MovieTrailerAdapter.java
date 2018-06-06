@@ -25,14 +25,14 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerHolder
         this.mItemClickListener = mItemClickListener;
     }
 
-    public void setTrailersData (ArrayList<Trailer> items){
-        mItems=items;
+    public void setTrailersData(ArrayList<Trailer> items) {
+        mItems = items;
         notifyDataSetChanged();
     }
 
     @Override
     public MovieTrailerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.movie_trailer_vh,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.movie_trailer_vh, parent, false);
         return new MovieTrailerHolder(view);
     }
 
@@ -47,6 +47,6 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerHolder
     }
 
     public interface ItemListener {
-        void onItemClick (Trailer item);
+        void onItemClick(Trailer item);
     }
 }

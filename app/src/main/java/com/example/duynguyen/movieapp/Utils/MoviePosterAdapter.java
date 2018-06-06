@@ -13,11 +13,11 @@ import java.util.ArrayList;
 
 public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterHolder> {
 
-    ArrayList<Movie> mItems=new ArrayList<Movie>();
+    ArrayList<Movie> mItems = new ArrayList<Movie>();
     Context mContext;
     protected static ItemListener mItemClickListener;
 
-    public MoviePosterAdapter(Context context, ItemListener itemClickListener){
+    public MoviePosterAdapter(Context context, ItemListener itemClickListener) {
         mContext = context;
         mItemClickListener = itemClickListener;
     }
@@ -51,8 +51,8 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterHolder> 
 //        }
 //    }
 
-    public void setMoviesData (ArrayList<Movie> movies){
-        mItems= movies;
+    public void setMoviesData(ArrayList<Movie> movies) {
+        mItems = movies;
         notifyDataSetChanged();
     }
 
@@ -75,6 +75,6 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterHolder> 
     }
 
     public interface ItemListener {
-        void onItemClick (Movie item);
+        void onItemClick(Movie item);
     }
 }

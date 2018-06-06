@@ -26,7 +26,8 @@ public class Trailer {
     public String getType() {
         return type;
     }
-    public String getImagePath(){
-        return "http://img.youtube.com/vi/"+key+"/mqdefault.jpg";
+
+    public String getImagePath() {
+        return "http://img.youtube.com/vi/" + key + "/mqdefault.jpg";
     }
 }

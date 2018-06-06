@@ -11,9 +11,6 @@ import com.example.duynguyen.movieapp.Model.Trailer;
 import com.example.duynguyen.movieapp.R;
 import com.squareup.picasso.Picasso;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by duynguyen on 6/2/18.
  */
@@ -30,15 +27,15 @@ public class MovieTrailerHolder extends RecyclerView.ViewHolder implements View.
         super(itemView);
         itemView.setOnClickListener(this);
 
-        trailerRelativeLayout=(RelativeLayout)itemView.findViewById(R.id.trailer_relativeLayout);
-        trailerIv=(ImageView)itemView.findViewById(R.id.trailer_iv);
-        nameTv=(TextView)itemView.findViewById(R.id.trailer_name_tv);
-        typeTv=(TextView)itemView.findViewById(R.id.trailer_type_tv);
+        trailerRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.trailer_relativeLayout);
+        trailerIv = (ImageView) itemView.findViewById(R.id.trailer_iv);
+        nameTv = (TextView) itemView.findViewById(R.id.trailer_name_tv);
+        typeTv = (TextView) itemView.findViewById(R.id.trailer_type_tv);
     }
 
-    public void setData (Trailer item) {
+    public void setData(Trailer item) {
         this.item = item;
-        Log.d("ImagePath data",item.getImagePath());
+        Log.d("ImagePath data", item.getImagePath());
         Picasso.get().load(item.getImagePath()).into(trailerIv);
         nameTv.setText(item.getName());
         typeTv.setText(item.getType());
@@ -46,7 +43,7 @@ public class MovieTrailerHolder extends RecyclerView.ViewHolder implements View.
 
     @Override
     public void onClick(View v) {
-        if (MovieTrailerAdapter.mItemClickListener!=null) {
+        if (MovieTrailerAdapter.mItemClickListener != null) {
             MovieTrailerAdapter.mItemClickListener.onItemClick(item);
         }
     }

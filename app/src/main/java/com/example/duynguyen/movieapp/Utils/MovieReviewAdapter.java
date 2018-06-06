@@ -30,7 +30,7 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewHolder> 
 
     @Override
     public MovieReviewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.movie_review_vh,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.movie_review_vh, parent, false);
         return new MovieReviewHolder(view);
     }
 
@@ -41,6 +41,6 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewHolder> 
 
     @Override
     public int getItemCount() {
-       return mItems.size();
+        return mItems.size();
     }
 }
