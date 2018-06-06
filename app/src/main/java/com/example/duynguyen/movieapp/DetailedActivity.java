@@ -13,8 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.duynguyen.movieapp.Model.Review;
+import com.example.duynguyen.movieapp.Model.ReviewList;
 import com.example.duynguyen.movieapp.Model.Trailer;
 import com.example.duynguyen.movieapp.Model.TrailerList;
+import com.example.duynguyen.movieapp.Utils.MovieClient;
+import com.example.duynguyen.movieapp.Utils.MovieReviewAdapter;
 import com.example.duynguyen.movieapp.Utils.MovieTrailerAdapter;
 import com.example.duynguyen.movieapp.Utils.RetrofitClient;
 import com.example.duynguyen.movieapp.Utils.TrailerClient;
@@ -49,7 +53,10 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
     TextView voteAverageTv;
     @BindView(R.id.trailers_rv)
     RecyclerView trailersRv;
+    @BindView(R.id.reviews_rv)
+    RecyclerView reviewsRv;
     MovieTrailerAdapter mMovieTrailerAdapter;
+    MovieReviewAdapter mMovieReviewAdapter;
 
 
     @Override
@@ -81,11 +88,16 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         releaseDateTv.setText(releaseDate);
         voteAverageTv.setText(voteAverage+"/10");
         //RecyclerView
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager0 = new LinearLayoutManager(this);
         mMovieTrailerAdapter =  new MovieTrailerAdapter(this,this);
-        trailersRv.setLayoutManager(linearLayoutManager);
+        trailersRv.setLayoutManager(linearLayoutManager0);
         trailersRv.setAdapter(mMovieTrailerAdapter);
+        mMovieReviewAdapter = new MovieReviewAdapter(this);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
+        reviewsRv.setLayoutManager(linearLayoutManager1);
+        reviewsRv.setAdapter(mMovieReviewAdapter);
         loadTrailers(id);
+        loadReviews(id);
     }
 
     private void loadTrailers(final String movieId) {
@@ -100,6 +112,36 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
 
             @Override
             public void onFailure(Call<TrailerList> call, Throwable t) {
+                //Show alert dialog
+                Log.e("Error",t.getMessage());
+                AlertDialog.Builder dialog = new AlertDialog.Builder(DetailedActivity.this);
+                dialog.setCancelable(false);
+                dialog.setTitle(getString(R.string.connection_error_title));
+                dialog.setMessage(getString(R.string.connection_error) );
+                dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        loadTrailers(movieId);
+                    }
+                });
+                final AlertDialog alert = dialog.create();
+                alert.show();
+            }
+        });
+    }
+
+    private void loadReviews (final String movieId){
+        MovieClient client =  new RetrofitClient("https://api.themoviedb.org").getClient().create(MovieClient.class);
+        Call<ReviewList> call =client.get_review_list(movieId,MainActivity.API_KEY);
+        call.enqueue(new Callback<ReviewList>() {
+            @Override
+            public void onResponse(Call<ReviewList> call, Response<ReviewList> response) {
+                ArrayList<Review> reviews = response.body().getReviews();
+                mMovieReviewAdapter.setData(reviews);
+            }
+
+            @Override
+            public void onFailure(Call<ReviewList> call, Throwable t) {
                 //Show alert dialog
                 Log.e("Error",t.getMessage());
                 AlertDialog.Builder dialog = new AlertDialog.Builder(DetailedActivity.this);
