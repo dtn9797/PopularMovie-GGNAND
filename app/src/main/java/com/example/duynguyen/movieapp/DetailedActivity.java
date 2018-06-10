@@ -4,11 +4,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +58,8 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
     RecyclerView trailersRv;
     @BindView(R.id.reviews_rv)
     RecyclerView reviewsRv;
+    @BindView(R.id.favorite_fab)
+    FloatingActionButton favoriteFab;
     MovieTrailerAdapter mMovieTrailerAdapter;
     MovieReviewAdapter mMovieReviewAdapter;
 
@@ -98,6 +103,15 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         reviewsRv.setAdapter(mMovieReviewAdapter);
         loadTrailers(id);
         loadReviews(id);
+
+        //when a fab is clicked
+        favoriteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Moive added to favorite list", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
     private void loadTrailers(final String movieId) {
@@ -165,6 +179,7 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         Toast.makeText(this, getString(R.string.close_on_intent_error), Toast.LENGTH_SHORT).show();
     }
 
+    //when a trailer clicked
     @Override
     public void onItemClick(Trailer item) {
         //Toast.makeText(getApplicationContext(),"Trailer is clicked",Toast.LENGTH_LONG).show();
@@ -174,6 +189,5 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
-
     }
 }
