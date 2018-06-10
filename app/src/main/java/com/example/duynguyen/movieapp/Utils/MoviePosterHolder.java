@@ -26,7 +26,7 @@ public class MoviePosterHolder extends RecyclerView.ViewHolder implements View.O
     public void setData(Movie item) {
         this.item = item;
 
-        Picasso.get().load("http://image.tmdb.org/t/p/w185" + item.getPoster_path()).into(imageView);
+        Picasso.get().load("http://image.tmdb.org/t/p/w185" + item.getPosterPath()).into(imageView);
     }
 
     @Override

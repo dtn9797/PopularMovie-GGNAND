@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     private void launchDetailActivity(Movie item) {
         Intent intent = new Intent(this, DetailedActivity.class);
         intent.putExtra(DetailedActivity.ID_EXTRA, item.getId());
-        intent.putExtra(DetailedActivity.POSTER_EXTRA, item.getPoster_path());
+        intent.putExtra(DetailedActivity.POSTER_EXTRA, item.getPosterPath());
         intent.putExtra(DetailedActivity.TITLE_EXTRA, item.getTitle());
         intent.putExtra(DetailedActivity.OVERVIEW_EXTRA, item.getOverview());
         intent.putExtra(DetailedActivity.RELEASE_DATE_EXTRA, item.getReleaseDate());
