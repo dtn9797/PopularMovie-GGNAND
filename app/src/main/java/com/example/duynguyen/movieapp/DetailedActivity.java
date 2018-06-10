@@ -124,7 +124,7 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
     }
 
     private void loadTrailers(final String movieId) {
-        TrailerClient client = new RetrofitClient("https://api.themoviedb.org").getClient().create(TrailerClient.class);
+        TrailerClient client = new RetrofitClient().getClient().create(TrailerClient.class);
         Call<TrailerList> call = client.trailers(movieId, MainActivity.API_KEY);
         call.enqueue(new Callback<TrailerList>() {
             @Override
@@ -154,7 +154,7 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
     }
 
     private void loadReviews(final String movieId) {
-        MovieClient client = new RetrofitClient("https://api.themoviedb.org").getClient().create(MovieClient.class);
+        MovieClient client = new RetrofitClient().getClient().create(MovieClient.class);
         Call<ReviewList> call = client.get_review_list(movieId, MainActivity.API_KEY);
         call.enqueue(new Callback<ReviewList>() {
             @Override

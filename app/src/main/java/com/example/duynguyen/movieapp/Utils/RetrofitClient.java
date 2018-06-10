@@ -9,11 +9,7 @@ public class RetrofitClient {
     public static String baseUrl = "https://api.themoviedb.org";
 
 
-    public static Retrofit retrofit = null;
-
-    public RetrofitClient(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
+    private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
