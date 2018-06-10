@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.duynguyen.movieapp.Database.AppDatabase;
+import com.example.duynguyen.movieapp.Model.Movie;
 import com.example.duynguyen.movieapp.Model.Review;
 import com.example.duynguyen.movieapp.Model.ReviewList;
 import com.example.duynguyen.movieapp.Model.Trailer;
@@ -63,6 +65,8 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
     MovieTrailerAdapter mMovieTrailerAdapter;
     MovieReviewAdapter mMovieReviewAdapter;
 
+    AppDatabase mDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,17 +79,20 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
             closeOnError();
         }
 
-        String id = intent.getStringExtra(ID_EXTRA);
-        String poster = intent.getStringExtra(POSTER_EXTRA);
-        String title = intent.getStringExtra(TITLE_EXTRA);
-        String overView = intent.getStringExtra(OVERVIEW_EXTRA);
-        String releaseDate = intent.getStringExtra(RELEASE_DATE_EXTRA);
-        String voteAverage = intent.getStringExtra(VOTE_AVERAGE_EXTRA);
+        final String id = intent.getStringExtra(ID_EXTRA);
+        final String poster = intent.getStringExtra(POSTER_EXTRA);
+        final String title = intent.getStringExtra(TITLE_EXTRA);
+        final String overView = intent.getStringExtra(OVERVIEW_EXTRA);
+        final String releaseDate = intent.getStringExtra(RELEASE_DATE_EXTRA);
+        final String voteAverage = intent.getStringExtra(VOTE_AVERAGE_EXTRA);
 
         if (poster.isEmpty() || title.isEmpty() || overView.isEmpty() || releaseDate.isEmpty() || voteAverage.isEmpty() || id.isEmpty()) {
             closeOnError();
             return;
         }
+
+        //testing purpose
+        mDatabase = AppDatabase.getInstance(getApplicationContext());
 
         Picasso.get().load("http://image.tmdb.org/t/p/w185" + poster).into(moviePosterIv);
         movieTitleTv.setText(title);
@@ -110,6 +117,8 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
             public void onClick(View view) {
                 Snackbar.make(view, "Moive added to favorite list", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Movie movie = new Movie(id,poster,voteAverage,overView,releaseDate,title);
+                mDatabase.movieDao().insertMovie(movie);
             }
         });
     }

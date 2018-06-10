@@ -1,4 +1,4 @@
-package com.example.duynguyen.movieapp.Utils;
+package com.example.duynguyen.movieapp.Database;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -16,8 +16,8 @@ import java.util.List;
 public interface MovieDao {
 
     @Query("SELECT * FROM movie")
-    LiveData<List<Movie>> loadAllTasks();
+    LiveData<List<Movie>> loadAllMovies();
 
     @Insert
-    void insertTask(Movie movie);
+    void insertMovie(Movie movie);
 }
