@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duynguyen.movieapp.Database.AppDatabase;
+import com.example.duynguyen.movieapp.Database.AppExecutors;
 import com.example.duynguyen.movieapp.Model.Movie;
 import com.example.duynguyen.movieapp.Model.Review;
 import com.example.duynguyen.movieapp.Model.ReviewList;
@@ -114,8 +116,13 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
             public void onClick(View view) {
                 Snackbar.make(view, "Moive added to favorite list", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                Movie movie = new Movie(id,poster,voteAverage,overView,releaseDate,title);
-                mDatabase.movieDao().insertMovie(movie);
+                final Movie movie = new Movie(id,poster,voteAverage,overView,releaseDate,title);
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDatabase.movieDao().insertMovie(movie);
+                    }
+                });
             }
         });
     }
