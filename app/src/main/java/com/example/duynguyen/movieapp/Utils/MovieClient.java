@@ -2,6 +2,7 @@ package com.example.duynguyen.movieapp.Utils;
 
 import com.example.duynguyen.movieapp.Model.MovieList;
 import com.example.duynguyen.movieapp.Model.ReviewList;
+import com.example.duynguyen.movieapp.Model.TrailerList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -21,4 +22,7 @@ public interface MovieClient {
 
     @GET("/3/movie/{id}/reviews")
     Call<ReviewList> get_review_list(@Path("id") String id, @Query("api_key") String apiKey);
+
+    @GET("/3/movie/{id}/videos")
+    Call<TrailerList> trailers(@Path("id") String id, @Query("api_key") String apiKey);
 }

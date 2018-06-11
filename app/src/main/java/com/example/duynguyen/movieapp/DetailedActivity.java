@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +25,6 @@ import com.example.duynguyen.movieapp.Utils.MovieClient;
 import com.example.duynguyen.movieapp.Utils.MovieReviewAdapter;
 import com.example.duynguyen.movieapp.Utils.MovieTrailerAdapter;
 import com.example.duynguyen.movieapp.Utils.RetrofitClient;
-import com.example.duynguyen.movieapp.Utils.TrailerClient;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -108,8 +106,7 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
         reviewsRv.setLayoutManager(linearLayoutManager1);
         reviewsRv.setAdapter(mMovieReviewAdapter);
-        loadTrailers(id);
-        loadReviews(id);
+        loadTrailersandReviews(id);
 
         //when a fab is clicked
         favoriteFab.setOnClickListener(new View.OnClickListener() {
@@ -123,10 +120,10 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         });
     }
 
-    private void loadTrailers(final String movieId) {
-        TrailerClient client = new RetrofitClient().getClient().create(TrailerClient.class);
-        Call<TrailerList> call = client.trailers(movieId, MainActivity.API_KEY);
-        call.enqueue(new Callback<TrailerList>() {
+    private void loadTrailersandReviews(final String movieId) {
+        MovieClient client = new RetrofitClient().getClient().create(MovieClient.class);
+        Call<TrailerList> trailerCall = client.trailers(movieId, MainActivity.API_KEY);
+        trailerCall.enqueue(new Callback<TrailerList>() {
             @Override
             public void onResponse(Call<TrailerList> call, Response<TrailerList> response) {
                 ArrayList<Trailer> trailers = response.body().getTrailers();
@@ -135,28 +132,12 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
 
             @Override
             public void onFailure(Call<TrailerList> call, Throwable t) {
-                //Show alert dialog
-                Log.e("Error", t.getMessage());
-                AlertDialog.Builder dialog = new AlertDialog.Builder(DetailedActivity.this);
-                dialog.setCancelable(false);
-                dialog.setTitle(getString(R.string.connection_error_title));
-                dialog.setMessage(getString(R.string.connection_error));
-                dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        loadTrailers(movieId);
-                    }
-                });
-                final AlertDialog alert = dialog.create();
-                alert.show();
+                showAlertDialog(movieId);
             }
         });
-    }
 
-    private void loadReviews(final String movieId) {
-        MovieClient client = new RetrofitClient().getClient().create(MovieClient.class);
-        Call<ReviewList> call = client.get_review_list(movieId, MainActivity.API_KEY);
-        call.enqueue(new Callback<ReviewList>() {
+        Call<ReviewList> reviewCall = client.get_review_list(movieId,MainActivity.API_KEY);
+        reviewCall.enqueue(new Callback<ReviewList>() {
             @Override
             public void onResponse(Call<ReviewList> call, Response<ReviewList> response) {
                 ArrayList<Review> reviews = response.body().getReviews();
@@ -165,22 +146,26 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
 
             @Override
             public void onFailure(Call<ReviewList> call, Throwable t) {
-                //Show alert dialog
-                Log.e("Error", t.getMessage());
-                AlertDialog.Builder dialog = new AlertDialog.Builder(DetailedActivity.this);
-                dialog.setCancelable(false);
-                dialog.setTitle(getString(R.string.connection_error_title));
-                dialog.setMessage(getString(R.string.connection_error));
-                dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        loadTrailers(movieId);
-                    }
-                });
-                final AlertDialog alert = dialog.create();
-                alert.show();
+                showAlertDialog(movieId);
             }
         });
+    }
+
+    private void showAlertDialog (final String movieId) {
+        //Show alert dialog
+        //Log.e("Error", t.getMessage());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(DetailedActivity.this);
+        dialog.setCancelable(false);
+        dialog.setTitle(getString(R.string.connection_error_title));
+        dialog.setMessage(getString(R.string.connection_error));
+        dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                loadTrailersandReviews(movieId);
+            }
+        });
+        final AlertDialog alert = dialog.create();
+        alert.show();
     }
 
     private void closeOnError() {
