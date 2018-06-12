@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     private String movieType = "normal type";
     MoviePosterAdapter mMoviePosterAdapter;
     private AppDatabase mDatabase;
+    private List<Movie> mFavoriteMovies;
 
     private static final String TAG = MainActivity.class.getSimpleName();
     final String POPULAR_TYPE = "popular";
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         if (savedInstanceState != null) {
             movieType = savedInstanceState.getString(TYPE_EXTRA);
         }
+        setupFavoriteViewModel();
         loadMovieData(movieType);
     }
 
@@ -141,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         mFavoriteMovieViewModel.getFavoriteMovies().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(@Nullable List<Movie> favoriteMovies) {
+                mFavoriteMovies = favoriteMovies;
                 if (movieType == FAVORITE_TYPE) {
                     Log.d(TAG, "Updating list of favorite movies from LiveData in ViewModel");
                     mMoviePosterAdapter.setMoviesData((ArrayList<Movie>) favoriteMovies);
@@ -163,7 +166,18 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         intent.putExtra(DetailedActivity.OVERVIEW_EXTRA, item.getOverview());
         intent.putExtra(DetailedActivity.RELEASE_DATE_EXTRA, item.getReleaseDate());
         intent.putExtra(DetailedActivity.VOTE_AVERAGE_EXTRA, item.getVoteAverage());
+        boolean isFavorite = (compareToFavMov(item));
+        intent.putExtra(DetailedActivity.IS_FAVORITE_EXTRA, isFavorite );
         startActivity(intent);
+    }
+
+    private boolean compareToFavMov (Movie movie){
+        for (int i = 0 ; i<mFavoriteMovies.size() ; i ++ ){
+            if (movie.getId().equals(mFavoriteMovies.get(i).getId())){
+                return  true;
+            }
+        }
+        return false;
     }
 
     @Override

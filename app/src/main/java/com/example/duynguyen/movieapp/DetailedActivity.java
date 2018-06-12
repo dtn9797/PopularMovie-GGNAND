@@ -2,6 +2,8 @@ package com.example.duynguyen.movieapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.duynguyen.movieapp.Database.AppDatabase;
 import com.example.duynguyen.movieapp.Database.AppExecutors;
+import com.example.duynguyen.movieapp.Model.FavoriteMovieViewModel;
 import com.example.duynguyen.movieapp.Model.Movie;
 import com.example.duynguyen.movieapp.Model.Review;
 import com.example.duynguyen.movieapp.Model.ReviewList;
@@ -45,6 +48,7 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
     public static final String OVERVIEW_EXTRA = "overview_extra";
     public static final String RELEASE_DATE_EXTRA = "resease_date_extra";
     public static final String VOTE_AVERAGE_EXTRA = "rating_extra";
+    public static final String IS_FAVORITE_EXTRA = "is_fav_extra";
 
     @BindView(R.id.movie_poster_iv)
     ImageView moviePosterIv;
@@ -85,6 +89,7 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         final String overView = intent.getStringExtra(OVERVIEW_EXTRA);
         final String releaseDate = intent.getStringExtra(RELEASE_DATE_EXTRA);
         final String voteAverage = intent.getStringExtra(VOTE_AVERAGE_EXTRA);
+        final boolean[] isFavorite = {intent.getBooleanExtra(IS_FAVORITE_EXTRA, false)};
 
         if (poster.isEmpty() || title.isEmpty() || overView.isEmpty() || releaseDate.isEmpty() || voteAverage.isEmpty() || id.isEmpty()) {
             closeOnError();
@@ -107,24 +112,51 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         mMovieReviewAdapter = new MovieReviewAdapter(this);
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
         reviewsRv.setLayoutManager(linearLayoutManager1);
+
         reviewsRv.setAdapter(mMovieReviewAdapter);
         loadTrailersandReviews(id);
 
-        //when a fab is clicked
+        //setup fab
+        setFavFabColor(isFavorite[0]);
         favoriteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Moive added to favorite list", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 final Movie movie = new Movie(id,poster,voteAverage,overView,releaseDate,title);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDatabase.movieDao().insertMovie(movie);
-                    }
-                });
+                if (!isFavorite[0]){
+                    Snackbar.make(view, "Movie added to favorite list", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    isFavorite[0] = true;
+                    setFavFabColor(isFavorite[0]);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                                mDatabase.movieDao().insertMovie(movie);
+                        }
+                    });
+                }
+                else {
+                    Snackbar.make(view, "Movie removed to favorite list", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    isFavorite[0] = false;
+                    setFavFabColor(isFavorite[0]);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDatabase.movieDao().deleteMovie(movie);
+                        }
+                    });
+                }
             }
         });
+    }
+
+    private void setFavFabColor (boolean isFav){
+        if (isFav) {
+            favoriteFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
+        }
+        else {
+            favoriteFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#000000")));
+        }
     }
 
     private void loadTrailersandReviews(final String movieId) {
