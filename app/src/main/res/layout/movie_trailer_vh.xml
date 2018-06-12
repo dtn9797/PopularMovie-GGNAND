@@ -1,13 +1,8 @@
-<LinearLayout android:layout_height="wrap_content"
+<RelativeLayout android:layout_height="wrap_content"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/trailer_relativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
 
         <ImageView
             android:id="@+id/trailer_iv"
@@ -25,16 +20,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:textStyle="bold"
-            android:text="type" />
+            android:text="@string/type_sample" />
 
         <TextView
             android:id="@+id/trailer_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/trailer_iv"
-            android:text="trailer for app" />
+            android:layout_toEndOf="@id/trailer_iv"
+            android:text="@string/trailer_sample" />
 
-    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

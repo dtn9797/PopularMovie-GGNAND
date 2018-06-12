@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.duynguyen.movieapp.Model.Trailer;
@@ -16,7 +15,6 @@ import com.squareup.picasso.Picasso;
  */
 
 public class MovieTrailerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    RelativeLayout trailerRelativeLayout;
     ImageView trailerIv;
     TextView nameTv;
     TextView typeTv;
@@ -27,7 +25,6 @@ public class MovieTrailerHolder extends RecyclerView.ViewHolder implements View.
         super(itemView);
         itemView.setOnClickListener(this);
 
-        trailerRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.trailer_relativeLayout);
         trailerIv = (ImageView) itemView.findViewById(R.id.trailer_iv);
         nameTv = (TextView) itemView.findViewById(R.id.trailer_name_tv);
         typeTv = (TextView) itemView.findViewById(R.id.trailer_type_tv);

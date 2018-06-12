@@ -10,14 +10,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_size"
         android:textStyle="bold"
-        android:text="Name" />
+        android:text="@string/author_name_sample" />
 
     <TextView
         android:id="@+id/review_detail_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_size"
-        android:text="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus" />
-
+        android:layout_marginStart="@dimen/default_size"
+        android:text="@string/review_sample"
+        android:layout_marginLeft="@dimen/default_size" />
 
 </LinearLayout>

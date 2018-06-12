@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 
 import com.example.duynguyen.movieapp.Database.AppDatabase;
 import com.example.duynguyen.movieapp.Database.AppExecutors;
-import com.example.duynguyen.movieapp.Model.FavoriteMovieViewModel;
 import com.example.duynguyen.movieapp.Model.Movie;
 import com.example.duynguyen.movieapp.Model.Review;
 import com.example.duynguyen.movieapp.Model.ReviewList;
@@ -103,7 +101,7 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         movieTitleTv.setText(title);
         overviewTv.setText(overView);
         releaseDateTv.setText(releaseDate);
-        voteAverageTv.setText(voteAverage + "/10");
+        voteAverageTv.setText(getString(R.string.vote_average,voteAverage));
         //RecyclerView
         LinearLayoutManager linearLayoutManager0 = new LinearLayoutManager(this);
         mMovieTrailerAdapter = new MovieTrailerAdapter(this, this);
@@ -121,8 +119,8 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         favoriteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Movie movie = new Movie(id,poster,voteAverage,overView,releaseDate,title);
-                if (!isFavorite[0]){
+                final Movie movie = new Movie(id, poster, voteAverage, overView, releaseDate, title);
+                if (!isFavorite[0]) {
                     Snackbar.make(view, "Movie added to favorite list", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     isFavorite[0] = true;
@@ -130,12 +128,11 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
-                                mDatabase.movieDao().insertMovie(movie);
+                            mDatabase.movieDao().insertMovie(movie);
                         }
                     });
-                }
-                else {
-                    Snackbar.make(view, "Movie removed to favorite list", Snackbar.LENGTH_LONG)
+                } else {
+                    Snackbar.make(view, "Movie removed from favorite list", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     isFavorite[0] = false;
                     setFavFabColor(isFavorite[0]);
@@ -150,11 +147,10 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         });
     }
 
-    private void setFavFabColor (boolean isFav){
+    private void setFavFabColor(boolean isFav) {
         if (isFav) {
             favoriteFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
-        }
-        else {
+        } else {
             favoriteFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#000000")));
         }
     }
@@ -175,7 +171,7 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
             }
         });
 
-        Call<ReviewList> reviewCall = client.get_review_list(movieId,MainActivity.API_KEY);
+        Call<ReviewList> reviewCall = client.get_review_list(movieId, MainActivity.API_KEY);
         reviewCall.enqueue(new Callback<ReviewList>() {
             @Override
             public void onResponse(Call<ReviewList> call, Response<ReviewList> response) {
@@ -190,7 +186,7 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         });
     }
 
-    private void showAlertDialog (final String movieId) {
+    private void showAlertDialog(final String movieId) {
         //Show alert dialog
         //Log.e("Error", t.getMessage());
         AlertDialog.Builder dialog = new AlertDialog.Builder(DetailedActivity.this);

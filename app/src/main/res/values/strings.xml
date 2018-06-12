@@ -1,12 +1,10 @@
 <resources>
     <string name="app_name">MovieApp</string>
-    <string name="intent_name">MovieDetails</string>
 
     <!--Error Messages-->
     <string name="connection_error_title">Connection Error</string>
     <string name="connection_error">Movies Data can not be loaded. Check for your connection.</string>
-    <string name="close_on_intent_error"></string>
-
+    <string name="close_on_intent_error">No data is found.</string>
     <!--Button name-->
     <string name="reload_button">Reload</string>
 
@@ -23,9 +21,16 @@
     <string name="vote_average_sample">5/10</string>
     <string name="release_date_sample">04/26/1997</string>
     <string name="over_view_sample">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation </string>
-
+    <!--In movie_review_vh-->
+    <string name="author_name_sample">Name</string>
+    <string name="review_sample">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus</string>
+    <!--In movie_trailer_vh-->
+    <string name="type_sample">Type</string>
+    <string name="trailer_sample">trailer for app</string>
     <!--In menu_main.xml-->
     <string name="popular_movie_mitem">Sort by Most Popular</string>
     <string name="top_rated_movie_mitem">Sort by Top Rated</string>
     <string name="favorite_movie_mitem">Show Favorite Movies</string>
+
+    <string name="vote_average">%s/10</string>
 </resources>

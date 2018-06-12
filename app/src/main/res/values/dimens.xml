@@ -1,5 +1,4 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
     <dimen name="default_size">20dp</dimen>
     <dimen name="default_font_size">20sp</dimen>
     <dimen name="default_padding">10dp</dimen>

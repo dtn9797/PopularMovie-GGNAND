@@ -1,6 +1,5 @@
 package com.example.duynguyen.movieapp;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
@@ -13,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.duynguyen.movieapp.Database.AppDatabase;
 import com.example.duynguyen.movieapp.Model.FavoriteMovieViewModel;
@@ -32,10 +32,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.ItemListener {
 
-    private RecyclerView recyclerView;
     private String movieType = "normal type";
     MoviePosterAdapter mMoviePosterAdapter;
-    private AppDatabase mDatabase;
     private List<Movie> mFavoriteMovies;
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -51,13 +49,11 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mMoviePosterAdapter = new MoviePosterAdapter(this, this);
         recyclerView.setAdapter(mMoviePosterAdapter);
         AutoFitGridLayoutManager autoFitGridLayoutManager = new AutoFitGridLayoutManager(MainActivity.this, 500);
         recyclerView.setLayoutManager(autoFitGridLayoutManager);
-
-        mDatabase = AppDatabase.getInstance(getApplicationContext());
 
         if (savedInstanceState != null) {
             movieType = savedInstanceState.getString(TYPE_EXTRA);
@@ -79,18 +75,21 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.popular_settings:
                 movieType = POPULAR_TYPE;
                 loadMovieData(movieType);
+                Toast.makeText(getApplicationContext(), "Popular Movies", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.top_rated_settings:
                 movieType = TOP_RATED_TYPE;
                 loadMovieData(movieType);
+                Toast.makeText(getApplicationContext(), "Top Rated Movies", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.favorite_settings:
                 movieType = FAVORITE_TYPE;
                 loadMovieData(movieType);
+                Toast.makeText(getApplicationContext(), "Favorite Movies", Toast.LENGTH_LONG).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -101,8 +100,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     public void loadMovieData(String type) {
         if (type.equals(FAVORITE_TYPE)) {
             setupFavoriteViewModel();
-        }
-        else {
+        } else {
             MovieClient client = new RetrofitClient().getClient().create(MovieClient.class);
             Call<MovieList> call;
             if (type.equals(TOP_RATED_TYPE)) {
@@ -144,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
             @Override
             public void onChanged(@Nullable List<Movie> favoriteMovies) {
                 mFavoriteMovies = favoriteMovies;
-                if (movieType == FAVORITE_TYPE) {
+                if (movieType.equals(FAVORITE_TYPE)) {
                     Log.d(TAG, "Updating list of favorite movies from LiveData in ViewModel");
                     mMoviePosterAdapter.setMoviesData((ArrayList<Movie>) favoriteMovies);
                 }
@@ -167,14 +165,14 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         intent.putExtra(DetailedActivity.RELEASE_DATE_EXTRA, item.getReleaseDate());
         intent.putExtra(DetailedActivity.VOTE_AVERAGE_EXTRA, item.getVoteAverage());
         boolean isFavorite = (compareToFavMov(item));
-        intent.putExtra(DetailedActivity.IS_FAVORITE_EXTRA, isFavorite );
+        intent.putExtra(DetailedActivity.IS_FAVORITE_EXTRA, isFavorite);
         startActivity(intent);
     }
 
-    private boolean compareToFavMov (Movie movie){
-        for (int i = 0 ; i<mFavoriteMovies.size() ; i ++ ){
-            if (movie.getId().equals(mFavoriteMovies.get(i).getId())){
-                return  true;
+    private boolean compareToFavMov(Movie movie) {
+        for (int i = 0; i < mFavoriteMovies.size(); i++) {
+            if (movie.getId().equals(mFavoriteMovies.get(i).getId())) {
+                return true;
             }
         }
         return false;

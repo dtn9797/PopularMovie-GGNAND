@@ -3,7 +3,6 @@ package com.example.duynguyen.movieapp.Model;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
 import com.example.duynguyen.movieapp.Database.AppDatabase;
