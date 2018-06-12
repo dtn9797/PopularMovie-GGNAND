@@ -2,6 +2,7 @@ package com.example.duynguyen.movieapp;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.duynguyen.movieapp.Database.AppDatabase;
+import com.example.duynguyen.movieapp.Model.FavoriteMovieViewModel;
 import com.example.duynguyen.movieapp.Model.Movie;
 import com.example.duynguyen.movieapp.Model.MovieList;
 import com.example.duynguyen.movieapp.Utils.AutoFitGridLayoutManager;
@@ -96,13 +98,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     public void loadMovieData(String type) {
         if (type.equals(FAVORITE_TYPE)) {
-            mDatabase.movieDao().loadAllMovies().observe(this, new Observer<List<Movie>>() {
-                @Override
-                public void onChanged(@Nullable List<Movie> movies) {
-                    Log.d(TAG, "Updating list of Movies from LiveData in ViewModel");
-                    mMoviePosterAdapter.setMoviesData((ArrayList<Movie>) movies);
-                }
-            });
+            setupFavoriteViewModel();
         }
         else {
             MovieClient client = new RetrofitClient().getClient().create(MovieClient.class);
@@ -138,6 +134,19 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
                 }
             });
         }
+    }
+
+    private void setupFavoriteViewModel() {
+        FavoriteMovieViewModel mFavoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
+        mFavoriteMovieViewModel.getFavoriteMovies().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(@Nullable List<Movie> favoriteMovies) {
+                if (movieType == FAVORITE_TYPE) {
+                    Log.d(TAG, "Updating list of favorite movies from LiveData in ViewModel");
+                    mMoviePosterAdapter.setMoviesData((ArrayList<Movie>) favoriteMovies);
+                }
+            }
+        });
     }
 
     @Override
