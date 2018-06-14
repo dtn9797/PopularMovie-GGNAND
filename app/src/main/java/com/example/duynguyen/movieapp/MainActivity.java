@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -33,14 +34,16 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.ItemListener {
 
     private String movieType = "normal type";
+    private AutoFitGridLayoutManager mAutoFitGridLayoutManager;
     MoviePosterAdapter mMoviePosterAdapter;
     private List<Movie> mFavoriteMovies;
+    private ArrayList<Movie> mMovies = new ArrayList<>();
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String BUNDLE_RECYCLER_LAYOUT = "recycler_layout";
     final String POPULAR_TYPE = "popular";
     final String TOP_RATED_TYPE = "top rated";
     final String FAVORITE_TYPE = "favorite";
-    final String TYPE_EXTRA = "type_extra";
     public static final String API_KEY = BuildConfig.ApiKey;
 
 
@@ -52,14 +55,13 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mMoviePosterAdapter = new MoviePosterAdapter(this, this);
         recyclerView.setAdapter(mMoviePosterAdapter);
-        AutoFitGridLayoutManager autoFitGridLayoutManager = new AutoFitGridLayoutManager(MainActivity.this, 500);
-        recyclerView.setLayoutManager(autoFitGridLayoutManager);
+        mAutoFitGridLayoutManager = new AutoFitGridLayoutManager(MainActivity.this, 500);
+        recyclerView.setLayoutManager(mAutoFitGridLayoutManager);
 
-        if (savedInstanceState != null) {
-            movieType = savedInstanceState.getString(TYPE_EXTRA);
+        if (savedInstanceState == null) {
+            setupFavoriteViewModel();
+            loadMovieData(movieType);
         }
-        setupFavoriteViewModel();
-        loadMovieData(movieType);
     }
 
     @Override
@@ -111,8 +113,8 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
             call.enqueue(new Callback<MovieList>() {
                 @Override
                 public void onResponse(Call<MovieList> call, Response<MovieList> response) {
-                    ArrayList<Movie> movies = response.body().getResults();
-                    mMoviePosterAdapter.setMoviesData(movies);
+                    mMovies = response.body().getResults();
+                    mMoviePosterAdapter.setMoviesData(mMovies);
                 }
 
                 @Override
@@ -141,10 +143,11 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         mFavoriteMovieViewModel.getFavoriteMovies().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(@Nullable List<Movie> favoriteMovies) {
+                mMovies = (ArrayList<Movie>) favoriteMovies;
                 mFavoriteMovies = favoriteMovies;
                 if (movieType.equals(FAVORITE_TYPE)) {
                     Log.d(TAG, "Updating list of favorite movies from LiveData in ViewModel");
-                    mMoviePosterAdapter.setMoviesData((ArrayList<Movie>) favoriteMovies);
+                    mMoviePosterAdapter.setMoviesData(mMovies);
                 }
             }
         });
@@ -181,6 +184,15 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(TYPE_EXTRA, movieType);
+        outState.putParcelableArrayList(BUNDLE_RECYCLER_LAYOUT, mMovies);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState!=null){
+            mMovies =savedInstanceState.getParcelableArrayList(BUNDLE_RECYCLER_LAYOUT);
+            mMoviePosterAdapter.setMoviesData(mMovies);
+        }
     }
 }

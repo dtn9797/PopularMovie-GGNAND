@@ -2,6 +2,8 @@ package com.example.duynguyen.movieapp.Model;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
@@ -10,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by duynguyen on 5/15/18.
  */
 @Entity(tableName = "movie")
-public class Movie {
+public class Movie implements Parcelable {
     @NonNull
     @PrimaryKey
     @SerializedName("id")
@@ -83,4 +85,41 @@ public class Movie {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.posterPath);
+        dest.writeString(this.voteAverage);
+        dest.writeString(this.overview);
+        dest.writeString(this.releaseDate);
+        dest.writeString(this.title);
+    }
+
+    protected Movie(Parcel in) {
+        this.id = in.readString();
+        this.posterPath = in.readString();
+        this.voteAverage = in.readString();
+        this.overview = in.readString();
+        this.releaseDate = in.readString();
+        this.title = in.readString();
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }
