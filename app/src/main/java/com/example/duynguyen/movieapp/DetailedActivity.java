@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +62,8 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
     TextView voteAverageTv;
     @BindView(R.id.trailers_rv)
     RecyclerView trailersRv;
+    @BindView(R.id.movie_detail_scrollView)
+    ScrollView mScrollView;
     @BindView(R.id.reviews_rv)
     RecyclerView reviewsRv;
     @BindView(R.id.favorite_fab)
@@ -218,5 +222,24 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        //Wonder why this method is not called after rotating my device.
+        outState.putIntArray("SCROLL_POSITION", new int[]{ mScrollView.getScrollX(), mScrollView.getScrollY()});
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        final int[] position = savedInstanceState.getIntArray("SCROLL_POSITION");
+        if(position != null)
+            mScrollView.post(new Runnable() {
+                public void run() {
+                    mScrollView.scrollTo(position[0], position[1]);
+                }
+            });
     }
 }

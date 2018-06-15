@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     private ArrayList<Movie> mMovies = new ArrayList<>();
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String BUNDLE_RECYCLER_LAYOUT = "recycler_layout";
+    private static final String MOVIES_EXTRA = "movies_extra";
+    private static final String FAVORITE_MOVIES_EXTRA = "fav_movies_extra";
     final String POPULAR_TYPE = "popular";
     final String TOP_RATED_TYPE = "top rated";
     final String FAVORITE_TYPE = "favorite";
@@ -184,14 +185,16 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(BUNDLE_RECYCLER_LAYOUT, mMovies);
+        outState.putParcelableArrayList(MOVIES_EXTRA, mMovies);
+        outState.putParcelableArrayList(FAVORITE_MOVIES_EXTRA, (ArrayList<Movie>) mFavoriteMovies);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState!=null){
-            mMovies =savedInstanceState.getParcelableArrayList(BUNDLE_RECYCLER_LAYOUT);
+            mMovies =savedInstanceState.getParcelableArrayList(MOVIES_EXTRA);
+            mFavoriteMovies = savedInstanceState.getParcelableArrayList(FAVORITE_MOVIES_EXTRA);
             mMoviePosterAdapter.setMoviesData(mMovies);
         }
     }
