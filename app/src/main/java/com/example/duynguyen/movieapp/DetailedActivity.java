@@ -225,10 +225,10 @@ public class DetailedActivity extends AppCompatActivity implements MovieTrailerA
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        //Wonder why this method is not called after rotating my device.
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putIntArray("SCROLL_POSITION", new int[]{ mScrollView.getScrollX(), mScrollView.getScrollY()});
+
     }
 
     @Override
